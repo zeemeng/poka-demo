@@ -29,7 +29,6 @@ app.post("/entries", async (req, res, next) => {
   const db = client.db("entries");
   const collection = db.collection("entries");
   const entry = req.body;
-  console.log(entry);
   try {
     const result = await collection.insertOne(entry);
     res.status(201).json({
@@ -39,6 +38,7 @@ app.post("/entries", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+  client.close();
 });
 
 app.get("*", (req, res, next) => {
