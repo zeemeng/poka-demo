@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Poka Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500;600;700&display=swap");
+      body {
+        font-family: "Maven Pro", Arial, Helvetica, sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Hello Poka! 🤗</h1>
+    <div id="entries"></div>
+    <form id="controls">
+      <input type="text" id="field" />
+      <button type="submit">Add DB entry</button>
+      <button type="button" id="refresh">Refresh</button>
+    </form>
+    <script>
+      const form = document.getElementById("controls");
+      const field = document.getElementById("field");
+      const entries = document.getElementById("entries");
+      const refresh = document.getElementById("refresh");
+
+      const getEntries = async () => {
+        const response = await fetch("/entries");
+        const result = await response.json();
+        entries.innerHTML = "";
+        result.entries.forEach((entry) =>
+          entries.insertAdjacentHTML("beforeend", `<div>${entry.value}</div>`)
+        );
+      };
+
+      form.onsubmit = (e) => {
+        e.preventDefault();
+        fetch("/entries", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ value: field.value }),
+        });
+        field.value = "";
+      };
+
+      refresh.onclick = getEntries;
+      window.onload = getEntries;
+    </script>
+  </body>
+</html>
