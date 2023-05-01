@@ -24,11 +24,7 @@ export class EcsFargateStack extends Stack {
 
     const mainContainer = taskDefinition.addContainer("main-container", {
       image: ecs.ContainerImage.fromEcrRepository(
-        ecr.Repository.fromRepositoryName(
-          this,
-          "poka-demo-1",
-          "954748608822.dkr.ecr.us-east-1.amazonaws.com/poka-demo-1"
-        )
+        ecr.Repository.fromRepositoryName(this, "poka-demo-1", "poka-demo-1")
       ),
       environment: {
         MONGO_USER: process.env.MONGO_INITDB_ROOT_USERNAME ?? "mongo",
